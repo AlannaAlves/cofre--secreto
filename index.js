@@ -1,4 +1,7 @@
-let senhaForte = [7, 3, 5];
+
+
+let senhaForte = [4, 8, 3];
+
 
 let cofreAberto = false;
 
@@ -10,10 +13,10 @@ function executarAcao(acao) {
 
     switch (acao) {
 
-       
+        
         case "jogar":
 
-         
+           
             let palpite = [];
 
             
@@ -26,9 +29,17 @@ function executarAcao(acao) {
                 palpite.push(numero);
             }
 
+            
+            if (palpite.some(numero => isNaN(numero))) {
+                tela.innerHTML = "⚠️ Digite os três números!";
+                tela.style.color = "orange";
+                return;
+            }
+
            
             let acertos = 0;
 
+           
             for (let i = 0; i < senhaForte.length; i++) {
 
                 if (palpite[i] === senhaForte[i]) {
@@ -36,66 +47,76 @@ function executarAcao(acao) {
                 }
             }
 
-            
             if (acertos === senhaForte.length) {
                 cofreAberto = true;
             } else {
                 cofreAberto = false;
             }
 
-           
+            
             if (cofreAberto === true) {
 
                 tela.innerHTML = "🔓 PARABÉNS! COFRE ABERTO!";
-                tela.style.color = "green";
+                tela.style.color = "#28a745";
 
             } else {
 
-                tela.innerHTML = "🔒 Senha incorreta! Você acertou " 
-                + acertos + " de 3 números.";
+                tela.innerHTML = "🔒 Senha incorreta! Você acertou "
+                    + acertos + " de 3 números.";
 
-                tela.style.color = "red";
+                tela.style.color = "#ff4d4d";
             }
 
             break;
 
 
-        
         case "dica":
 
-           
-            if (senhaForte[0] % 2 === 0) {
+            let resultado = "";
+            let soma = 0;
 
-                tela.innerHTML = "💡 Dica: o primeiro número da senha é PAR!";
+            
+            for (let i = 0; i < senhaForte.length; i++) {
 
-            } else {
+                soma += senhaForte[i];
 
-                tela.innerHTML = "💡 Dica: o primeiro número da senha é ÍMPAR!";
+                if (senhaForte[i] % 2 === 0) {
+
+                    resultado += "Número " + (i + 1) + ": PAR. ";
+
+                } else {
+
+                    resultado += "Número " + (i + 1) + ": ÍMPAR. ";
+                }
             }
+
+            
+            tela.innerHTML = "💡 DICA: " + resultado +
+                "<br>🧮 A soma dos números da senha é: " + soma;
 
             tela.style.color = "#f39c12";
 
             break;
 
 
-       
+        
         case "limpar":
 
-           
+            
             for (let i = 0; i < senhaForte.length; i++) {
 
                 document.getElementById("num" + i).value = "";
             }
 
-           
+            
             cofreAberto = false;
 
-           
+            
             tela.innerHTML = "Aguardando tentativa...";
             tela.style.color = "white";
 
             break;
 
     }
-
 }
+
